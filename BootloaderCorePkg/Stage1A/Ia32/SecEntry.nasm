@@ -58,8 +58,8 @@ FspTempRamInitRet:
 FspApiSuccess:
         ;
         ; Setup stack
-        ; ECX: Bootloader stack base
-        ; EDX: Bootloader stack top
+        ; ECX: Temporary RAM Base
+        ; EDX: Temporary RAM End
         ;
         mov     esp, ecx
         add     esp, dword [ASM_PFX(PcdGet32(PcdStage1StackBaseOffset))]
@@ -67,7 +67,7 @@ FspApiSuccess:
 
         xor     ebx, ebx             ; Use EBX for Status
         ;
-        ; Check stage1 stack base offset
+        ; Check if the end of Stage1 Data is within the temporary RAM range
         ;
         mov     eax, esp
         add     eax, dword [ASM_PFX(PcdGet32(PcdStage1DataSize))]

@@ -69,6 +69,15 @@ CallFspMemoryInit (
 
   DEBUG ((DEBUG_INFO, "Call FspMemoryInit ... "));
 
+  // When FspMemoryInit() API is called, the FSP requires a stack available for its use. Before
+  // calling the FspMemoryInit() API, the bootloader should setup a stack of required size as
+  // mentioned in Integration Guide and initialize the FSPM_ARCH_UPD.StackBase and
+  // FSPM_ARCH_UPD.StackSize parameters. FSP consumes this stack region only inside
+  // this API.
+  
+  //
+  // Based on the value of NewStack we will switch from the bootloader stack to the FSP stack
+  //
   NewStack = PcdGet32 (PcdFSPMStackTop);
   if (NewStack == 0xFFFFFFFF) {
     NewStack = FspmUpdCommon->FspmArchUpd.StackBase + FspmUpdCommon->FspmArchUpd.StackSize;

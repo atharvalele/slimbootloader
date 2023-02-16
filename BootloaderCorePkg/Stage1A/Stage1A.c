@@ -434,6 +434,25 @@ SecStartup2 (
   - Relocate by itself stage1A code to temp memory and execute.
   - CPU halted if relocation fails.
 
+  - This function expects the stack to be loaded with STAGE1A_ASM_PARAM struct elements
+    and a pointer to that structure, as denoted below
+
+  ----------------------------------
+  Status [63:32]                            <-- stack top initialized after coming back from TempRamInit()
+  ----------------------------------   --
+  Status [31:0]                          |
+  ----------------------------------     | 
+  TimeStamp[0] [63:32]                   |
+  ----------------------------------     |  <-- Stage1A_ASM_PARAM struct
+  TimeStamp[0] [31:0]                    |
+  ----------------------------------     |
+  CarTop                                 |
+  ----------------------------------     |
+  CarBase                                |
+  ----------------------------------   --
+  Pointer to Stage1A_ASM_PARAM struct       <-- ESP
+  ----------------------------------
+
   @param[in] Params            Pointer to stage specific parameters.
 
 **/
